@@ -1,0 +1,18 @@
+version: "3.1"
+services:
+  server:
+    build: .
+    command: --db root:secret@tcp(db)/stats
+    ports:
+    - 8089:8089
+    depends_on:
+      - db
+    restart: always
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: stats
+    volumes:
+    - "./mysql:/docker-entrypoint-initdb.d"
